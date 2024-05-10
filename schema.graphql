@@ -1,0 +1,120 @@
+# To improve query performance, we strongly suggest adding indexes to any field that you plan to filter or sort by
+# Add the `@index` or `@index(unique: true)` annotation after any non-key field
+# https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
+
+type Supply @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  pool: String! @index
+  supplier: String! @index
+  to: String! @index
+  amount: BigInt!
+}
+
+type Withdraw @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  pool: String! @index
+  withdrawer: String! @index
+  to: String! @index
+  amount: BigInt!
+}
+
+type Deposit @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  pool: String! @index
+  depositer: String! @index
+  amount: BigInt!
+}
+
+type Redeem @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  pool: String! @index
+  redeemer: String! @index
+  to: String! @index
+  amount: BigInt!
+}
+
+type Borrow @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  pool: String! @index
+  borrower: String! @index
+  amount: BigInt!
+  borrowRate: BigInt!
+}
+
+type Repay @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  pool: String! @index
+  repayer: String! @index
+  amount: BigInt!
+  useCollateral: Boolean!
+}
+
+type Swap @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  underlyingAssetIn: String! @index
+  underlyingAssetOut: String! @index
+  account: String! @index
+  amountIn: BigInt!
+  amountOut: BigInt!
+}
+
+type PositionLiquidation @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  liquidator: String! @index
+  pool: String! @index
+  account: String! @index
+  collateral: BigInt!
+  debt: BigInt!
+  price: BigInt!
+}
+
+type Liquidation @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  liquidator: String! @index
+  account: String! @index
+  healthFactor: BigInt!
+  healthFactorLiquidationThreshold: BigInt!
+  totalCollateralUsd: BigInt!
+  totalDebtUsd: BigInt!
+}
+
+type ClosePosition @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  pool: String! @index
+  poolUsd: String! @index
+  account: String! @index
+  collateral: BigInt!
+  debt: BigInt!
+  remainUsd: BigInt!
+}
+
+type Close @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  poolUsd: String! @index
+  account: String! @index
+  amountUsdStartClose: BigInt!
+  amountUsdAfterRepayAndSellCollateral: BigInt!
+  amountUsdAfterBuyCollateralAndRepay: BigInt!
+}
