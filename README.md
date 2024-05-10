@@ -5,14 +5,14 @@
 git clone git@github.com:xiaoyu1998/up-subquery.git --recursive
 ```
 
-## Install dependencies and project
+## Install dependencies
 ```shell
 npm install -g @subql/cli
 ```
 
 ## Install and build project
 ```shell
-yarn 
+npm i 
 yarn build
 ```
 
