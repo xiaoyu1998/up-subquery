@@ -17,9 +17,9 @@ dotenv.config({ path: dotenvPath });
 const project: EthereumProject = {
   specVersion: "1.0.0",
   version: "0.0.1",
-  name: "ethereum-goerli-starter",
+  name: "ethereum-testnet-starter",
   description:
-    "This project can be use as a starting point for developing your new Ethereum Goerli SubQuery project",
+    "This project can be use as a starting point for developing your new Ethereum testnet SubQuery project",
   runner: {
     node: {
       name: "@subql/node-ethereum",
@@ -35,8 +35,7 @@ const project: EthereumProject = {
   },
   network: {
     /**
-     * chainId is the EVM Chain ID, for Ethereum Goerli this is 5
-     * https://chainlist.org/chain/5
+     * chainId is the EVM Chain ID, for Ethereum this is 1998
      */
     chainId: process.env.CHAIN_ID!,
     /**
