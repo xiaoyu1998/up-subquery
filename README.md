@@ -11,7 +11,7 @@ npm install -g @subql/cli
 ```
 ## Configuration 
 ```shell
-1.geth ENDPOINT and CHAIN_ID in .env
+1.Geth ENDPOINT and CHAIN_ID in .env
 2.EventEmitter contract address in line57 in project.ts
 ```
 
