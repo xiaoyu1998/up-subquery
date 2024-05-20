@@ -9,7 +9,7 @@ git clone git@github.com:xiaoyu1998/up-subquery.git --recursive
 ```shell
 npm install -g @subql/cli
 ```
-#### Configuration 
+## Configuration 
 ```shell
 1.geth ENDPOINT and CHAIN_ID in .env
 2.EventEmitter contract address in line57 in project.ts
