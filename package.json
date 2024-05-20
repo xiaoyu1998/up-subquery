@@ -24,15 +24,16 @@
   "dependencies": {
     "@subql/common": "latest",
     "@subql/types-ethereum": "latest",
-    "assert": "^2.0.0"
+    "assert": "^2.0.0",
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@subql/cli": "latest",
-    "@subql/types": "latest",
-    "@subql/testing": "latest",
     "@subql/node-ethereum": "latest",
+    "@subql/testing": "latest",
+    "@subql/types": "latest",
+    "dotenv": "latest",
     "ethers": "^5.7.2",
-    "typescript": "latest",
-    "dotenv": "latest"
+    "typescript": "latest"
   }
 }

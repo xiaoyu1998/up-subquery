@@ -1,4 +1,4 @@
-import {
+ import {
   EthereumProject,
   EthereumDatasourceKind,
   EthereumHandlerKind,
@@ -17,9 +17,9 @@ dotenv.config({ path: dotenvPath });
 const project: EthereumProject = {
   specVersion: "1.0.0",
   version: "0.0.1",
-  name: "arbitrum-one-starter",
+  name: "ethereum-goerli-starter",
   description:
-    "This project can be use as a starting point for developing your new Arbitrum One SubQuery project",
+    "This project can be use as a starting point for developing your new Ethereum Goerli SubQuery project",
   runner: {
     node: {
       name: "@subql/node-ethereum",
@@ -35,8 +35,8 @@ const project: EthereumProject = {
   },
   network: {
     /**
-     * chainId is the EVM Chain ID, for Arbitrum One this is 42161
-     * https://chainlist.org/chain/42161
+     * chainId is the EVM Chain ID, for Ethereum Goerli this is 5
+     * https://chainlist.org/chain/5
      */
     chainId: process.env.CHAIN_ID!,
     /**
@@ -54,7 +54,7 @@ const project: EthereumProject = {
     startBlock: 1,
     options: {
       abi: 'EventEmitter',
-      address: '0x2eDc460229DC2710b4977d9F7225E6236dbAF7a2',
+      address: '0x8069B0f6579130dE99cbA868cB9D9CF512892ecd',
     },
     assets: new Map([['EventEmitter', {file: './abis/EventEmitter.json'}]]),
     mapping: {
@@ -102,6 +102,15 @@ const project: EthereumProject = {
     filter: {
       topics: [
         "Liquidation(address,address,uint256,uint256,uint256,uint256)"
+      ]
+    }
+  },
+  {
+    handler: "handlePoolUpdatedEventEmitterLog",
+    kind: EthereumHandlerKind.Event,
+    filter: {
+      topics: [
+        "PoolUpdated(address,uint256,uint256,uint256,uint256)"
       ]
     }
   },

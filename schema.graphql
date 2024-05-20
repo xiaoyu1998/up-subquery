@@ -118,3 +118,14 @@ type Close @entity {
   amountUsdAfterRepayAndSellCollateral: BigInt!
   amountUsdAfterBuyCollateralAndRepay: BigInt!
 }
+
+type PoolUpdated @entity {
+  id: ID! # Transaction hash
+  blockHeight: BigInt!
+  contractAddress: String! @index
+  pool: String! @index
+  liquidityRate: BigInt!
+  borrowRate: BigInt!
+  liquidityIndex: BigInt!
+  borrowIndex: BigInt!
+}

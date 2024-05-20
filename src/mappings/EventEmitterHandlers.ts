@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Auto-generated
-import {Supply,Withdraw,Deposit,Redeem,Borrow,Repay,Swap,PositionLiquidation,Liquidation,ClosePosition,Close} from "../types";
-import {BorrowLog,CloseLog,ClosePositionLog,DepositLog,LiquidationLog,PositionLiquidationLog,RedeemLog,RepayLog,SupplyLog,SwapLog,WithdrawLog,} from "../types/abi-interfaces/EventEmitter";
+import {Supply,Withdraw,Deposit,Redeem,Borrow,Repay,Swap,PositionLiquidation,Liquidation,ClosePosition,Close,PoolUpdated} from "../types";
+import {BorrowLog,CloseLog,ClosePositionLog,DepositLog,LiquidationLog,PoolUpdatedLog,PositionLiquidationLog,RedeemLog,RepayLog,SupplyLog,SwapLog,WithdrawLog,} from "../types/abi-interfaces/EventEmitter";
 
 
 export async function handleBorrowEventEmitterLog(log: BorrowLog ): Promise<void> {
@@ -82,6 +82,22 @@ export async function handleLiquidationEventEmitterLog(log: LiquidationLog ): Pr
 	});
 
 	await liquidation.save();
+}
+
+export async function handlePoolUpdatedEventEmitterLog(log: PoolUpdatedLog ): Promise<void> {
+    logger.info(`New transfer PoolUpdated log at block ${log.blockNumber}`);
+	const poolUpdate = PoolUpdated.create({
+		id: log.transactionHash,
+		blockHeight: BigInt(log.blockNumber.toString()),
+		contractAddress: log.address,
+		pool: log.args!.pool,
+		liquidityRate: BigInt(log.args!.liquidityRate.toString()),
+		borrowRate: BigInt(log.args!.borrowRate.toString()),
+		liquidityIndex: BigInt(log.args!.liquidityIndex.toString()),
+		borrowIndex: BigInt(log.args!.borrowIndex.toString()),
+	});
+
+	await poolUpdate.save();
 }
 
 export async function handlePositionLiquidationEventEmitterLog(log: PositionLiquidationLog ): Promise<void> {
