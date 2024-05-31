@@ -184,6 +184,7 @@ export async function handleSwapEventEmitterLog(log: SwapLog ): Promise<void> {
 		account: log.args!.account,
 		amountIn: BigInt(log.args!.amountIn.toString()),
 		amountOut: BigInt(log.args!.amountOut.toString()),
+		fee: BigInt(log.args!.fee.toString()),
 	});
 
 	await swap.save();

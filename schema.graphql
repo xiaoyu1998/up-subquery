@@ -77,6 +77,7 @@ type Swap @entity {
   account: String! @index
   amountIn: BigInt!
   amountOut: BigInt!
+  fee: BigInt!
 }
 
 type PositionLiquidation @entity {
