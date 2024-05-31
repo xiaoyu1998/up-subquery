@@ -5,6 +5,7 @@
 type Supply @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   pool: String! @index
   supplier: String! @index
@@ -15,6 +16,7 @@ type Supply @entity {
 type Withdraw @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   pool: String! @index
   withdrawer: String! @index
@@ -25,6 +27,7 @@ type Withdraw @entity {
 type Deposit @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   pool: String! @index
   depositer: String! @index
@@ -34,6 +37,7 @@ type Deposit @entity {
 type Redeem @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   pool: String! @index
   redeemer: String! @index
@@ -44,6 +48,7 @@ type Redeem @entity {
 type Borrow @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   pool: String! @index
   borrower: String! @index
@@ -54,6 +59,7 @@ type Borrow @entity {
 type Repay @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   pool: String! @index
   repayer: String! @index
@@ -64,6 +70,7 @@ type Repay @entity {
 type Swap @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   underlyingAssetIn: String! @index
   underlyingAssetOut: String! @index
@@ -75,6 +82,7 @@ type Swap @entity {
 type PositionLiquidation @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   liquidator: String! @index
   pool: String! @index
@@ -87,6 +95,7 @@ type PositionLiquidation @entity {
 type Liquidation @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   liquidator: String! @index
   account: String! @index
@@ -99,6 +108,7 @@ type Liquidation @entity {
 type ClosePosition @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   pool: String! @index
   poolUsd: String! @index
@@ -111,6 +121,7 @@ type ClosePosition @entity {
 type Close @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   poolUsd: String! @index
   account: String! @index
@@ -122,6 +133,7 @@ type Close @entity {
 type PoolUpdated @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
+  blockTimestamp: BigInt!
   contractAddress: String! @index
   pool: String! @index
   liquidityRate: BigInt!

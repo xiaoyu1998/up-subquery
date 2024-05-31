@@ -10,6 +10,7 @@ export async function handleBorrowEventEmitterLog(log: BorrowLog ): Promise<void
 	const borrow = Borrow.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
 		pool: log.args!.pool,
 		borrower: log.args!.borrower,
@@ -25,6 +26,7 @@ export async function handleCloseEventEmitterLog(log: CloseLog ): Promise<void> 
 	const close = Close.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,		
 		poolUsd: log.args!.poolUsd,
 		account: log.args!.account,
@@ -41,6 +43,7 @@ export async function handleClosePositionEventEmitterLog(log: ClosePositionLog )
 	const closePosition = ClosePosition.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
 		pool: log.args!.pool,		
 		poolUsd: log.args!.poolUsd,
@@ -58,6 +61,7 @@ export async function handleDepositEventEmitterLog(log: DepositLog ): Promise<vo
 	const deposit = Deposit.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
 		pool: log.args!.pool,
 		depositer: log.args!.depositer,
@@ -72,6 +76,7 @@ export async function handleLiquidationEventEmitterLog(log: LiquidationLog ): Pr
 	const liquidation = Liquidation.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
 		liquidator: log.args!.liquidator,		
 		account: log.args!.account,
@@ -89,6 +94,7 @@ export async function handlePoolUpdatedEventEmitterLog(log: PoolUpdatedLog ): Pr
 	const poolUpdate = PoolUpdated.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
 		pool: log.args!.pool,
 		liquidityRate: BigInt(log.args!.liquidityRate.toString()),
@@ -105,6 +111,7 @@ export async function handlePositionLiquidationEventEmitterLog(log: PositionLiqu
 	const positionLiquidation = PositionLiquidation.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
 		liquidator: log.args!.liquidator,		
 		pool: log.args!.pool,
@@ -122,6 +129,7 @@ export async function handleRedeemEventEmitterLog(log: RedeemLog ): Promise<void
 	const redeem = Redeem.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
 		pool: log.args!.pool,
 		redeemer: log.args!.redeemer,
@@ -137,6 +145,7 @@ export async function handleRepayEventEmitterLog(log: RepayLog ): Promise<void> 
 	const repay = Repay.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
 		pool: log.args!.pool,
 		repayer: log.args!.repayer,
@@ -152,6 +161,7 @@ export async function handleSupplyEventEmitterLog(log: SupplyLog ): Promise<void
 	const supply = Supply.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
 		pool: log.args!.pool,
 		supplier: log.args!.supplier,
@@ -167,6 +177,7 @@ export async function handleSwapEventEmitterLog(log: SwapLog ): Promise<void> {
 	const swap = Swap.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
 		underlyingAssetIn: log.args!.underlyingAssetIn,
 		underlyingAssetOut: log.args!.underlyingAssetOut,
@@ -183,6 +194,7 @@ export async function handleWithdrawEventEmitterLog(log: WithdrawLog ): Promise<
 	const withdraw = Withdraw.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
+		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
 		pool: log.args!.pool,
 		withdrawer: log.args!.withdrawer,
