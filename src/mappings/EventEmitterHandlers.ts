@@ -1,9 +1,74 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // Auto-generated
-import {Supply,Withdraw,Deposit,Redeem,Borrow,Repay,Swap,PositionLiquidation,Liquidation,ClosePosition,Close,PoolUpdated} from "../types";
+import {
+	Supply,
+	Withdraw,
+	Deposit,
+	Redeem,
+	Borrow,
+	Repay,
+	Swap,
+	PositionLiquidation,
+	Liquidation,
+	ClosePosition,
+	Close,
+	PoolUpdated, PoolIntervalEntity,
+} from "../types";
 import {BorrowLog,CloseLog,ClosePositionLog,DepositLog,LiquidationLog,PoolUpdatedLog,PositionLiquidationLog,RedeemLog,RepayLog,SupplyLog,SwapLog,WithdrawLog,} from "../types/abi-interfaces/EventEmitter";
 
+export async function handlePoolUpdateFourHourEventEmitterLog(log: PoolUpdatedLog ): Promise<void> {
+	logger.info(`New transfer PoolUpdated 4H log at block ${log.blockNumber}`);
+	const blockTimeStamp=log.transaction.blockTimestamp
+	const pool=log.args!.pool
+	const contractAddress=log.address
+	const currentDate = new Date(Number(blockTimeStamp*BigInt(1000)));
+	const currentHours = currentDate.getUTCHours();
+	const startHour = Math.floor(currentHours / 4) * 4;
+	const startDate = new Date(currentDate);
+	startDate.setUTCHours(startHour, 0, 0, 0);
+	const endDate = new Date(startDate);
+	endDate.setUTCHours(startHour + 4);
+	const endTimeStamp=(endDate.getTime()/Number(1000)).toString()
+	const id=pool+"_4H_"+endTimeStamp
+	const lastEntity=await PoolIntervalEntity.getByFields([
+		["id", "=", id]
+	]);
+	if(lastEntity.length>0){
+		const lastData=lastEntity[0]
+		const updatedCount=lastData.updatedCount
+		const totalCount=updatedCount+BigInt(1)
+		let totalLiquidityRate = lastData.liquidityRate*updatedCount+BigInt(log.args!.liquidityRate.toString());
+		let aveLiquidityRate=totalLiquidityRate/totalCount;
+		let totalBorrowRate = lastData.borrowRate*updatedCount+BigInt(log.args!.borrowRate.toString());
+		let aveBorrowRate=totalBorrowRate/totalCount;
+
+		const poolUpdated4H = PoolIntervalEntity.create({
+			id: lastData.id,
+			updatedTimestamp: lastData.updatedTimestamp,
+			contractAddress: lastData.contractAddress,
+			pool:lastData.pool,
+			liquidityRate: aveLiquidityRate,
+			borrowRate: aveBorrowRate,
+			updatedCount:totalCount,
+			interval:"4H"
+		});
+		await poolUpdated4H.save();
+	}else {
+		const poolUpdated4H = PoolIntervalEntity.create({
+			id: id,
+			updatedTimestamp: BigInt(endTimeStamp),
+			contractAddress: contractAddress,
+			pool:pool,
+			liquidityRate: BigInt(log.args!.liquidityRate.toString()),
+			borrowRate: BigInt(log.args!.borrowRate.toString()),
+			updatedCount:BigInt(1),
+			interval:"4H"
+		});
+
+		await poolUpdated4H.save();
+	}
+}
 
 export async function handleBorrowEventEmitterLog(log: BorrowLog ): Promise<void> {
     logger.info(`New transfer Borrow log at block ${log.blockNumber}`);
