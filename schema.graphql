@@ -142,3 +142,14 @@ type PoolUpdated @entity {
   liquidityIndex: BigInt!
   borrowIndex: BigInt!
 }
+
+type PoolIntervalEntity @entity {
+  id: ID! # Transaction hash
+  updatedTimestamp: BigInt! @index
+  contractAddress: String! @index
+  pool: String! @index
+  liquidityRate: BigInt!
+  borrowRate: BigInt!
+  updatedCount: BigInt!
+  interval:String! @index # 1h 4h
+}

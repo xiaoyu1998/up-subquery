@@ -50,10 +50,10 @@ const project: EthereumProject = {
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 1,
+    startBlock: 124000,
     options: {
       abi: 'EventEmitter',
-      address: '0x8069B0f6579130dE99cbA868cB9D9CF512892ecd',
+      address: '0x60c0410B32c353b2198864BE81B44Acc74856387',
     },
     assets: new Map([['EventEmitter', {file: './abis/EventEmitter.json'}]]),
     mapping: {
@@ -166,7 +166,16 @@ const project: EthereumProject = {
         "Withdraw(address,address,address,uint256)"
       ]
     }
-  }
+  },
+  {
+     handler: "handlePoolUpdateFourHourEventEmitterLog",
+     kind: EthereumHandlerKind.Event,
+     filter: {
+       topics: [
+           "PoolUpdated(address,uint256,uint256,uint256,uint256)"
+         ]
+     }
+ },
 ]
     }
   },],
