@@ -16,6 +16,7 @@ import {
 	PoolUpdated, PoolIntervalEntity,
 } from "../types";
 import {BorrowLog,CloseLog,ClosePositionLog,DepositLog,LiquidationLog,PoolUpdatedLog,PositionLiquidationLog,RedeemLog,RepayLog,SupplyLog,SwapLog,WithdrawLog,} from "../types/abi-interfaces/EventEmitter";
+const crypto = require('crypto');
 
 export async function handlePoolUpdateFourHourEventEmitterLog(log: PoolUpdatedLog ): Promise<void> {
 	logger.info(`New transfer PoolUpdated 4H log at block ${log.blockNumber}`);
@@ -30,7 +31,7 @@ export async function handlePoolUpdateFourHourEventEmitterLog(log: PoolUpdatedLo
 	const endDate = new Date(startDate);
 	endDate.setUTCHours(startHour + 4);
 	const endTimeStamp=(endDate.getTime()/Number(1000)).toString()
-	const id=pool+"_4H_"+endTimeStamp
+	const id=crypto.createHash('md5').update(pool+"_4H_"+endTimeStamp).digest('hex');
 	const lastEntity=await PoolIntervalEntity.getByFields([
 		["id", "=", id]
 	]);
@@ -81,6 +82,8 @@ export async function handleBorrowEventEmitterLog(log: BorrowLog ): Promise<void
 		borrower: log.args!.borrower,
 		amount: BigInt(log.args!.amount.toString()),
 		borrowRate: BigInt(log.args!.borrowRate.toString()),
+		collateral:BigInt(log.args!.collateral.toString()),
+		debtScaled:BigInt(log.args!.debtScaled.toString()),
 	});
 
 	await borrow.save();
@@ -115,7 +118,8 @@ export async function handleClosePositionEventEmitterLog(log: ClosePositionLog )
 		account: log.args!.account,
 		collateral: BigInt(log.args!.collateral.toString()),
 	    debt: BigInt(log.args!.debt.toString()),
-	    remainUsd: BigInt(log.args!.remainUsd.toString()),
+		collateralUsd: BigInt(log.args!.collateralUsd.toString()),
+		debtScaledUsd: BigInt(log.args!.debtScaledUsd.toString())
 	});
 
 	await closePosition.save();
@@ -131,6 +135,8 @@ export async function handleDepositEventEmitterLog(log: DepositLog ): Promise<vo
 		pool: log.args!.pool,
 		depositer: log.args!.depositer,
 		amount: BigInt(log.args!.amount.toString()),
+		collateral: BigInt(log.args!.collateral.toString()),
+		debtScaled: BigInt(log.args!.debtScaled.toString())
 	});
 
 	await deposit.save();
@@ -200,6 +206,8 @@ export async function handleRedeemEventEmitterLog(log: RedeemLog ): Promise<void
 		redeemer: log.args!.redeemer,
 		to: log.args!.to,
 		amount: BigInt(log.args!.amount.toString()),
+		collateral: BigInt(log.args!.collateral.toString()),
+		debtScaled: BigInt(log.args!.debtScaled.toString())
 	});
 
 	await redeem.save();
@@ -216,6 +224,8 @@ export async function handleRepayEventEmitterLog(log: RepayLog ): Promise<void> 
 		repayer: log.args!.repayer,
 		amount: BigInt(log.args!.amount.toString()),
 		useCollateral: log.args!.useCollateral,
+		collateral: BigInt(log.args!.collateral.toString()),
+		debtScaled: BigInt(log.args!.debtScaled.toString())
 	});
 
 	await repay.save();
@@ -244,12 +254,16 @@ export async function handleSwapEventEmitterLog(log: SwapLog ): Promise<void> {
 		blockHeight: BigInt(log.blockNumber.toString()),
 		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
-		underlyingAssetIn: log.args!.underlyingAssetIn,
-		underlyingAssetOut: log.args!.underlyingAssetOut,
+		poolIn: log.args!.poolIn,
+		poolOut: log.args!.poolOut,
 		account: log.args!.account,
 		amountIn: BigInt(log.args!.amountIn.toString()),
 		amountOut: BigInt(log.args!.amountOut.toString()),
 		fee: BigInt(log.args!.fee.toString()),
+		collateralIn: BigInt(log.args!.collateralIn.toString()),
+		debtScaledIn:BigInt(log.args!.debtScaledIn.toString()),
+		collateralOut: BigInt(log.args!.collateralOut.toString()),
+		debtScaledOut: BigInt(log.args!.debtScaledOut.toString())
 	});
 
 	await swap.save();

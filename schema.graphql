@@ -32,6 +32,8 @@ type Deposit @entity {
   pool: String! @index
   depositer: String! @index
   amount: BigInt!
+  collateral: BigInt!
+  debtScaled: BigInt!
 }
 
 type Redeem @entity {
@@ -43,6 +45,8 @@ type Redeem @entity {
   redeemer: String! @index
   to: String! @index
   amount: BigInt!
+  collateral: BigInt!
+  debtScaled: BigInt!
 }
 
 type Borrow @entity {
@@ -54,6 +58,8 @@ type Borrow @entity {
   borrower: String! @index
   amount: BigInt!
   borrowRate: BigInt!
+  collateral: BigInt!
+  debtScaled: BigInt!
 }
 
 type Repay @entity {
@@ -65,6 +71,8 @@ type Repay @entity {
   repayer: String! @index
   amount: BigInt!
   useCollateral: Boolean!
+  collateral: BigInt!
+  debtScaled: BigInt!
 }
 
 type Swap @entity {
@@ -72,12 +80,16 @@ type Swap @entity {
   blockHeight: BigInt!
   blockTimestamp: BigInt!
   contractAddress: String! @index
-  underlyingAssetIn: String! @index
-  underlyingAssetOut: String! @index
+  poolIn: String! @index
+  poolOut: String! @index
   account: String! @index
   amountIn: BigInt!
   amountOut: BigInt!
   fee: BigInt!
+  collateralIn: BigInt!
+  debtScaledIn: BigInt!
+  collateralOut: BigInt!
+  debtScaledOut: BigInt!
 }
 
 type PositionLiquidation @entity {
@@ -116,7 +128,8 @@ type ClosePosition @entity {
   account: String! @index
   collateral: BigInt!
   debt: BigInt!
-  remainUsd: BigInt!
+  collateralUsd: BigInt!
+  debtScaledUsd: BigInt!
 }
 
 type Close @entity {

@@ -50,10 +50,10 @@ const project: EthereumProject = {
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 124000,
+    startBlock: 194000,
     options: {
       abi: 'EventEmitter',
-      address: '0x60c0410B32c353b2198864BE81B44Acc74856387',
+      address: '0x8a6d8dDFaF34d9D9b5B880689af8C5251F378e2E',
     },
     assets: new Map([['EventEmitter', {file: './abis/EventEmitter.json'}]]),
     mapping: {
@@ -64,7 +64,7 @@ const project: EthereumProject = {
     kind: EthereumHandlerKind.Event,
     filter: {
       topics: [
-        "Borrow(address,address,uint256,uint256)"
+        "Borrow(address,address,uint256,uint256,uint256,uint256)"
       ]
     }
   },
@@ -82,7 +82,7 @@ const project: EthereumProject = {
     kind: EthereumHandlerKind.Event,
     filter: {
       topics: [
-        "ClosePosition(address,address,address,uint256,uint256,uint256)"
+        "ClosePosition(address,address,address,uint256,uint256,uint256,uint256,uint256)"
       ]
     }
   },
@@ -91,7 +91,7 @@ const project: EthereumProject = {
     kind: EthereumHandlerKind.Event,
     filter: {
       topics: [
-        "Deposit(address,address,uint256)"
+        "Deposit(address,address,uint256,uint256,uint256)"
       ]
     }
   },
@@ -127,7 +127,7 @@ const project: EthereumProject = {
     kind: EthereumHandlerKind.Event,
     filter: {
       topics: [
-        "Redeem(address,address,address,uint256)"
+        "Redeem(address,address,address,uint256,uint256,uint256)"
       ]
     }
   },
@@ -136,7 +136,7 @@ const project: EthereumProject = {
     kind: EthereumHandlerKind.Event,
     filter: {
       topics: [
-        "Repay(address,address,uint256,bool)"
+        "Repay(address,address,uint256,bool,uint256,uint256)"
       ]
     }
   },
@@ -154,7 +154,7 @@ const project: EthereumProject = {
     kind: EthereumHandlerKind.Event,
     filter: {
       topics: [
-        "Swap(address,address,address,uint256,uint256)"
+        "Swap(address,address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256)"
       ]
     }
   },
