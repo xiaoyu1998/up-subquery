@@ -122,12 +122,13 @@ type ClosePosition @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
   blockTimestamp: BigInt!
-  contractAddress: String! @index
   pool: String! @index
   poolUsd: String! @index
   account: String! @index
   collateral: BigInt!
-  debt: BigInt!
+  debtClosed: BigInt!
+  remainUsd: BigInt!
+  remainCollateral: BigInt!
   collateralUsd: BigInt!
   debtScaledUsd: BigInt!
 }
@@ -157,7 +158,7 @@ type PoolUpdated @entity {
 }
 
 type PoolIntervalEntity @entity {
-  id: ID! # Transaction hash
+  id: ID!
   updatedTimestamp: BigInt! @index
   contractAddress: String! @index
   pool: String! @index
@@ -165,4 +166,12 @@ type PoolIntervalEntity @entity {
   borrowRate: BigInt!
   updatedCount: BigInt!
   interval:String! @index # 1h 4h
+}
+
+
+type MyPrincipalEntity @entity {
+  id: ID! # account + pool
+  account: String! @index
+  pool: String! @index
+  principal: BigInt!
 }

@@ -50,10 +50,10 @@ const project: EthereumProject = {
   },
   dataSources: [{
     kind: EthereumDatasourceKind.Runtime,
-    startBlock: 194000,
+    startBlock: 6495886,
     options: {
       abi: 'EventEmitter',
-      address: '0x8a6d8dDFaF34d9D9b5B880689af8C5251F378e2E',
+      address: '0x738ADEe1B201c1a6293e8060fD8e4bD00d0AB7c0',
     },
     assets: new Map([['EventEmitter', {file: './abis/EventEmitter.json'}]]),
     mapping: {
@@ -82,7 +82,7 @@ const project: EthereumProject = {
     kind: EthereumHandlerKind.Event,
     filter: {
       topics: [
-        "ClosePosition(address,address,address,uint256,uint256,uint256,uint256,uint256)"
+        "ClosePosition(address,address,address,uint256,uint256,uint256,uint256,uint256,uint256)"
       ]
     }
   },

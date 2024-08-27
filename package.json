@@ -25,6 +25,7 @@
     "@subql/common": "latest",
     "@subql/types-ethereum": "latest",
     "assert": "^2.0.0",
+    "rxjs": "^7.8.1",
     "tslib": "^2.6.2"
   },
   "devDependencies": {

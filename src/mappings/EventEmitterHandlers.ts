@@ -13,7 +13,7 @@ import {
 	Liquidation,
 	ClosePosition,
 	Close,
-	PoolUpdated, PoolIntervalEntity,
+	PoolUpdated, PoolIntervalEntity , MyPrincipalEntity
 } from "../types";
 import {BorrowLog,CloseLog,ClosePositionLog,DepositLog,LiquidationLog,PoolUpdatedLog,PositionLiquidationLog,RedeemLog,RepayLog,SupplyLog,SwapLog,WithdrawLog,} from "../types/abi-interfaces/EventEmitter";
 const crypto = require('crypto');
@@ -112,12 +112,13 @@ export async function handleClosePositionEventEmitterLog(log: ClosePositionLog )
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
 		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
-		contractAddress: log.address,
 		pool: log.args!.pool,		
 		poolUsd: log.args!.poolUsd,
 		account: log.args!.account,
+		debtClosed: BigInt(log.args!.debtClosed.toString()),
+		remainUsd: BigInt(log.args!.remainUsd.toString()),
+		remainCollateral: BigInt(log.args!.remainCollateral.toString()),
 		collateral: BigInt(log.args!.collateral.toString()),
-	    debt: BigInt(log.args!.debt.toString()),
 		collateralUsd: BigInt(log.args!.collateralUsd.toString()),
 		debtScaledUsd: BigInt(log.args!.debtScaledUsd.toString())
 	});
@@ -233,18 +234,47 @@ export async function handleRepayEventEmitterLog(log: RepayLog ): Promise<void> 
 
 export async function handleSupplyEventEmitterLog(log: SupplyLog ): Promise<void> {
     logger.info(`New transfer Supply log at block ${log.blockNumber}`);
+
+	const supplierAddress = log.args!.supplier;
+	const poolAddress=log.args!.pool;
+	const supplyAmount=BigInt(log.args!.amount.toString());
+
 	const supply = Supply.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
 		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
-		pool: log.args!.pool,
-		supplier: log.args!.supplier,
+		pool: poolAddress,
+		supplier: supplierAddress,
 		to: log.args!.to,
-		amount: BigInt(log.args!.amount.toString()),
+		amount: supplyAmount,
 	});
 
 	await supply.save();
+
+	const id=crypto.createHash('md5').update(poolAddress+supplierAddress).digest('hex');
+	const myPrincipals=await MyPrincipalEntity.getByFields([
+		["id", "=", id]
+	]);
+	if(myPrincipals.length>0){
+		const principalData=myPrincipals[0]
+		const principal=supplyAmount+principalData.principal;
+		const myPrincipal = MyPrincipalEntity.create({
+			id:id,
+			account:supplierAddress,
+			pool:poolAddress,
+			principal:principal
+		});
+		await myPrincipal.save();
+	}else{
+		const myPrincipal = MyPrincipalEntity.create({
+			id:id,
+			account:supplierAddress,
+			pool:poolAddress,
+			principal:supplyAmount,
+		});
+		await myPrincipal.save();
+	}
 }
 
 export async function handleSwapEventEmitterLog(log: SwapLog ): Promise<void> {
@@ -271,16 +301,47 @@ export async function handleSwapEventEmitterLog(log: SwapLog ): Promise<void> {
 
 export async function handleWithdrawEventEmitterLog(log: WithdrawLog ): Promise<void> {
     logger.info(`New transfer Withdraw log at block ${log.blockNumber}`);
+
+	const withdrawer = log.args!.withdrawer;
+	const poolAddress=log.args!.pool;
+	const withdrawAmount=BigInt(log.args!.amount.toString());
+
 	const withdraw = Withdraw.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
 		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
 		contractAddress: log.address,
-		pool: log.args!.pool,
-		withdrawer: log.args!.withdrawer,
+		pool: poolAddress,
+		withdrawer: withdrawer,
 		to: log.args!.to,
-		amount: BigInt(log.args!.amount.toString()),
+		amount: withdrawAmount,
 	});
 
 	await withdraw.save();
+
+
+	const id=crypto.createHash('md5').update(poolAddress+withdrawer).digest('hex');
+	const myPrincipals=await MyPrincipalEntity.getByFields([
+		["id", "=", id]
+	]);
+	if(myPrincipals.length>0){
+		const principalData=myPrincipals[0]
+		const principal=principalData.principal-withdrawAmount<BigInt(0)? BigInt(0):principalData.principal-withdrawAmount;
+		const myPrincipal = MyPrincipalEntity.create({
+			id:id,
+			account:withdrawer,
+			pool:poolAddress,
+			principal:principal
+		});
+		await myPrincipal.save();
+	}else{
+		const myPrincipal = MyPrincipalEntity.create({
+			id:id,
+			account:withdrawer,
+			pool:poolAddress,
+			principal:BigInt(0),
+		});
+		await myPrincipal.save();
+	}
 }
+
