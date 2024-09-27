@@ -9,13 +9,13 @@ import {
 	Borrow,
 	Repay,
 	Swap,
-	PositionLiquidation,
+	LiquidationPosition,
 	Liquidation,
 	ClosePosition,
 	Close,
 	PoolUpdated, PoolIntervalEntity , MyPrincipalEntity
 } from "../types";
-import {BorrowLog,CloseLog,ClosePositionLog,DepositLog,LiquidationLog,PoolUpdatedLog,PositionLiquidationLog,RedeemLog,RepayLog,SupplyLog,SwapLog,WithdrawLog,} from "../types/abi-interfaces/EventEmitter";
+import {BorrowLog,CloseLog,ClosePositionLog,DepositLog,LiquidationLog,PoolUpdatedLog,LiquidationPositionLog,RedeemLog,RepayLog,SupplyLog,SwapLog,WithdrawLog,} from "../types/abi-interfaces/EventEmitter";
 const crypto = require('crypto');
 
 export async function handlePoolUpdateFourHourEventEmitterLog(log: PoolUpdatedLog ): Promise<void> {
@@ -118,7 +118,7 @@ export async function handleClosePositionEventEmitterLog(log: ClosePositionLog )
 		debtClosed: BigInt(log.args!.debtClosed.toString()),
 		remainUsd: BigInt(log.args!.remainUsd.toString()),
 		remainCollateral: BigInt(log.args!.remainCollateral.toString()),
-		collateral: BigInt(log.args!.collateral.toString()),
+		collateralSold: BigInt(log.args!.collateralSold.toString()),
 		collateralUsd: BigInt(log.args!.collateralUsd.toString()),
 		debtScaledUsd: BigInt(log.args!.debtScaledUsd.toString())
 	});
@@ -178,9 +178,9 @@ export async function handlePoolUpdatedEventEmitterLog(log: PoolUpdatedLog ): Pr
 	await poolUpdate.save();
 }
 
-export async function handlePositionLiquidationEventEmitterLog(log: PositionLiquidationLog ): Promise<void> {
+export async function handlePositionLiquidationEventEmitterLog(log: LiquidationPositionLog ): Promise<void> {
     logger.info(`New transfer PositionLiquidation log at block ${log.blockNumber}`);
-	const positionLiquidation = PositionLiquidation.create({
+	const positionLiquidation = LiquidationPosition.create({
 		id: log.transactionHash,
 		blockHeight: BigInt(log.blockNumber.toString()),
 		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
@@ -188,9 +188,8 @@ export async function handlePositionLiquidationEventEmitterLog(log: PositionLiqu
 		liquidator: log.args!.liquidator,		
 		pool: log.args!.pool,
 		account: log.args!.account,
-		collateral: BigInt(log.args!.collateral.toString()),
-	    debt: BigInt(log.args!.debt.toString()),
-	    price: BigInt(log.args!.price.toString()),
+		collateralUsd: BigInt(log.args!.collateralUsd.toString()),
+	    debtUsd: BigInt(log.args!.debtUsd.toString()),
 	});
 
 	await positionLiquidation.save();

@@ -118,7 +118,7 @@ const project: EthereumProject = {
     kind: EthereumHandlerKind.Event,
     filter: {
       topics: [
-        "PositionLiquidation(address,address,address,uint256,uint256,uint256)"
+        "LiquidationPosition(address,address,address,uint256,uint256)"
       ]
     }
   },

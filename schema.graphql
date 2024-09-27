@@ -92,7 +92,7 @@ type Swap @entity {
   debtScaledOut: BigInt!
 }
 
-type PositionLiquidation @entity {
+type LiquidationPosition @entity {
   id: ID! # Transaction hash
   blockHeight: BigInt!
   blockTimestamp: BigInt!
@@ -100,9 +100,8 @@ type PositionLiquidation @entity {
   liquidator: String! @index
   pool: String! @index
   account: String! @index
-  collateral: BigInt!
-  debt: BigInt!
-  price: BigInt!
+  collateralUsd: BigInt!
+  debtUsd: BigInt!
 }
 
 type Liquidation @entity {
@@ -125,7 +124,7 @@ type ClosePosition @entity {
   pool: String! @index
   poolUsd: String! @index
   account: String! @index
-  collateral: BigInt!
+  collateralSold: BigInt!
   debtClosed: BigInt!
   remainUsd: BigInt!
   remainCollateral: BigInt!
