@@ -180,14 +180,22 @@ export async function handlePoolUpdatedEventEmitterLog(log: PoolUpdatedLog ): Pr
 
 export async function handlePositionLiquidationEventEmitterLog(log: LiquidationPositionLog ): Promise<void> {
     logger.info(`New transfer PositionLiquidation log at block ${log.blockNumber}`);
+
+	const txId = log.transactionHash;
+	const contractAddress = log.address;
+	const pool = log.args!.pool;
+	const account = log.args!.account;
+	const liquidator = log.args!.liquidator;
+	const liquidationPositionId=crypto.createHash('md5').update(txId+pool+account+liquidator+contractAddress).digest('hex');
 	const positionLiquidation = LiquidationPosition.create({
-		id: log.transactionHash,
+		id: liquidationPositionId,
+		txId:txId,
 		blockHeight: BigInt(log.blockNumber.toString()),
 		blockTimestamp: BigInt(log.transaction.blockTimestamp.toString()),
-		contractAddress: log.address,
-		liquidator: log.args!.liquidator,		
-		pool: log.args!.pool,
-		account: log.args!.account,
+		contractAddress: contractAddress,
+		liquidator: liquidator,
+		pool: pool,
+		account: account,
 		collateralUsd: BigInt(log.args!.collateralUsd.toString()),
 	    debtUsd: BigInt(log.args!.debtUsd.toString()),
 	});
